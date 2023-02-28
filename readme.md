@@ -1,28 +1,11 @@
 # Interview Questions for JS, React Developer
 
 <details>
-  <summary>Question</summary>
-  
-  ### Answer
-  1. Foo
-  2. Bar
-     * Baz
-     * Qux
-
-```js
-function logSomething(something) {
-	console.log("Something", something)
-}
-```
-
-</details>
-
-<details>
   <summary>Что вызывает обновления компонентов?</summary>
 
-Рендеринг не обязательно === отрисовка
-(for ex: в список тасок добавилась 1 новая таска)
-произойдёт рендеринг всех тасок, но отрисуется только новая
+Рендеринг не обязательно === отрисовка\
+(for ex: в список тасок добавилась 1 новая таска)\
+произойдёт рендеринг всех тасок, но отрисуется только новая\
 
 -   Обновление родителя
 -   Обновление пропсов от родителя
@@ -33,7 +16,7 @@ function logSomething(something) {
 const [, forceUpdate] = useReducer((x) => x + 1, 0)
 ```
 
-может пригодится если обновления от setState не приходят, т.е. если ссылка на стейт остается той же
+может пригодится если обновления от setState не приходят, т.е. если ссылка на стейт остается той же\
 for ex:
 
 ```js
@@ -46,32 +29,32 @@ forceUpdate()
 <details>
   <summary>Что такое Virtual DOM? Как он работает?</summary>
 
-Это вирутальное представление реального DOM дерева внутри реакта для повышения производительности при манипуляциях с DOM, т.к. делать каждый раз querySelector и т.д. довольно затратная операция. Оно хранится в памяти.
-Синхронизация с реальным DOM происходит засчёт Reconcilation
-Fiber хранит доп. информацию о дереве - часть виртуального дома
-Fiber это js объект, которая содержит инфу о компоненте, входные параметры(пропсы) и результат
+Это вирутальное представление реального DOM дерева внутри реакта для повышения производительности при манипуляциях с DOM, т.к. делать каждый раз querySelector и т.д. довольно затратная операция.\ Оно хранится в памяти.\
+Синхронизация с реальным DOM происходит засчёт Reconcilation\
+Fiber хранит доп. информацию о дереве - часть виртуального дома\
+Fiber это js объект, которая содержит инфу о компоненте, входные параметры(пропсы) и результат\
 
-todo: узнать как fibers связаны с обновлениями
+todo: узнать как fibers связаны с обновлениями\
 
 </details>
 
 <details>
   <summary>setState асинхронный или синхронный?</summary>
-Асинхронный.
-Однако react может объединять пачку вызовов setState в один рендер, не приводя к большому кол-ву ререндеров
-Это называется batching
+Асинхронный.\
+Однако react может объединять пачку вызовов setState в один рендер, не приводя к большому кол-ву ререндеров\
+Это называется batching\
 
 </details>
 
 <details>
   <summary>Что такое JSX?</summary>
 
-Javascript XML
-Дополнение к синтаксисиу JS
-Синтаксический сахар для функции React.createElement(component, props, children)
+Javascript XML\
+Дополнение к синтаксисиу JS\
+Синтаксический сахар для функции React.createElement(component, props, children)\
 
-JSX дает декларативность
-За транспайлинг (перевод из jsx в createElement) отвечает Babel
+JSX дает декларативность\
+За транспайлинг (перевод из jsx в createElement) отвечает Babel\
 
 ```javascript
 <div>Hello world</div>
@@ -88,8 +71,8 @@ React.createElement("div", null, "Hello world")
 <details>
   <summary>Разница memo и useMemo?</summary>
 
--   memo - HOC для мемоизации вложенного компонента при неизменных входных параметрах (пропсах), помогает избегать повторного рендеринга
-    сравнение пропсов поверхностное - shallow
+-   memo - HOC для мемоизации вложенного компонента при неизменных входных параметрах (пропсах), помогает избегать повторного рендеринга\
+    сравнение пропсов поверхностное - shallow\
 
 -   useMemo - hook для мемоизации значения функции, которая считается сильноэнергозатратной
 
@@ -108,8 +91,8 @@ const result = useMemo(() => complexCalculations(id), [id])
 <details>
   <summary>Что такое Pure Component?</summary>
 
-Pure Component = "Чистый компонент"
-Называется таковым, если возвращает один и тот же результат при одинаковых пропсов и стейтов
+Pure Component = "Чистый компонент"\
+Называется таковым, если возвращает один и тот же результат при одинаковых пропсов и стейтов\
 
 -   есть shouldComponentUpdate в классовых компонентах
 -   есть React.memo в функциональных компонентах
@@ -148,9 +131,9 @@ Redux:
 <details>
   <summary>contextAPI + useReducer?</summary>
 
-не позволяют time trabel debug
-нет dev tools
-подойдут для graphQL ApolloClient
+не позволяют time trabel debug\
+нет dev tools\
+подойдут для graphQL ApolloClient\
 
 </details>
 
@@ -165,12 +148,12 @@ higher order component - компонент высшего порядка - ко
 -   для инжектирования зависимостей
 -   помогает соблюдать DRY концепт
 
-observer из MobX
-memo из React
-mapStateToProps из Redux для классовых компонентов
+observer из MobX\
+memo из React\
+mapStateToProps из Redux для классовых компонентов\
 
-hoc это фабрика компонентов
-hoc позволяет скрывать источники данных для компонентов
+hoc это фабрика компонентов\
+hoc позволяет скрывать источники данных для компонентов\
 
 ```javascript
 const _log = (type, msg) => console[type](msg)
@@ -193,13 +176,13 @@ export const ComponentForExport = withLoggerHOC(({ log, text }) => {
 <details>
   <summary>Когда использовать классовые компонентов вместо функциональных?</summary>
 
-    В целом, почти все методы жизненного цикла (из классовых) можно так или иначе реализовать в функциональных
+    В целом, почти все методы жизненного цикла (из классовых) можно так или иначе реализовать в функциональных\
 
-    useEffect = componentWillUpdate, componentDidUpdate, componentDidMount
-    useLayoutEffect = componentDidUpdate, componentDidMount
+    useEffect = componentWillUpdate, componentDidUpdate, componentDidMount\
+    useLayoutEffect = componentDidUpdate, componentDidMount\
 
-    однако отсутсвует несколько этапов жизнненного цикла из классовых в функ-ых
-    for ex: getSnapshotBeforeUpdate, getDerrivedStateFromError, componentDidCatch
+    однако отсутсвует несколько этапов жизнненного цикла из классовых в функ-ых\
+    for ex: getSnapshotBeforeUpdate, getDerrivedStateFromError, componentDidCatch\
 
     getSnapshotBeforeUpdate:
 
