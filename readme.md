@@ -1,5 +1,5 @@
-# Interview Questions for Developer about JS, React, CSS
+# Interview Questions for Web Developer
 
--   [React](./questions/questions_react.md)
--   [JS](./questions/questions_js.md)
--   [CSS](./questions/questions_css.md)
+-   [React](./questions/react.md)
+-   [JS](./questions/js.md)
+-   [CSS](./questions/css.md)
