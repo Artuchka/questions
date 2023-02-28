@@ -194,18 +194,18 @@ useLayoutEffect = componentDidUpdate, componentDidMount
 
 for ex: getSnapshotBeforeUpdate, getDerrivedStateFromError, componentDidCatch
 
-    getSnapshotBeforeUpdate:
+getSnapshotBeforeUpdate:
 
 -   прямо перед добавлением в DOM
 -   доступны некая инфа о ДОМ - положение прокрутки for ex
 
-    getDerrivedStateFromError:
+getDerrivedStateFromError:
 
 -   после возникновения ошибки потомка
 -   вызывается на этапе рендера
 -   для рендеринга запасного UI в случае ошибки
 
-    componentDidCatch:
+componentDidCatch:
 
 -   после возникновения ошибки потомка
 -   для логгирования ошибка
@@ -221,6 +221,7 @@ errorBoundaries (предохранители) можно сделать тол�
 однако....?
 
 </details>
+
 <details>
   <summary>Зачем lazyLoading и codeSplitting?</summary>
 
@@ -244,5 +245,240 @@ const Comp = () => {
 	)
 }
 ```
+
+</details>
+
+<details>
+  <summary>Что такое управляемые и неуправляемы компоненты?</summary>
+
+управляемый - тот компонент, значение которого контроллирует React
+обычно для input textarea select
+
+```javascript
+const CompWithControlledInput = () => {
+	const [name, setName] = useState("")
+
+	const handleChange = (e) => {
+		setName(e.target.value)
+	}
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		console.log({ name })
+	}
+	return (
+		<form onSubmit={handleSubmit}>
+			<input value={name} onChange={handleChange} />
+		</form>
+	)
+}
+
+const CompWithUncontrolledInput = () => {
+	const ref = useRef(null)
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		const name = ref.current.value
+		console.log({ name })
+	}
+	return (
+		<form onSubmit={handleSubmit}>
+			<input ref={ref} value={name} onChange={handleChange} />
+		</form>
+	)
+}
+```
+
+</details>
+
+<details>
+  <summary>Что такое context? Зачем он нужен?</summary>
+
+context позволяет передавать данные по дереву компонентов без prop drilling'а
+(без необходмости передачи пропсов на промежуточных компонентах) от родителя к дитю
+
+```javascript
+const ContextExampleApp = () => {
+	// const [name, setName] = useState("")
+	// const handleChange = (e) => {
+	// 	setName(e.target.value)
+	// }
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault()
+	// 	console.log({ name })
+	// }
+	// return (
+	// 	<form onSubmit={handleSubmit}>
+	// 		<input value={name} onChange={handleChange} />
+	// 	</form>
+	// )
+}
+```
+
+</details>
+
+<details>
+  <summary>Что такое порталы? Для чего они используются?</summary>
+
+portal позволяют дочерние ДОМ компонент вне узлов, где находится родительский компонент
+
+отобразить модальное окно и тому подобное - для непересечения со стилями
+
+```javascript
+const PortalExampleApp = () => {}
+```
+
+</details>
+
+<details>
+  <summary>Для чего используются ref?</summary>
+
+-   даёт возможность получить доступ к ДОМ узлам и react элементам (сторонних библиотек)
+-   для хранения любых значений, изменение которых не должно вызывать рендер
+-   для ссылки на элемент
+-   императивный код нежелателен
+-   для управления фокусом
+-   для медиа контента
+
+</details>
+
+<details>
+  <summary>Для чего нужны keys?</summary>
+
+keys - строковый аттрибут
+
+-   помогает реакту понять какие элементы были добавлены, изменены, удалены
+-   только в крайних случаях = не стоит использовать index при проходе через map, если список может изменяться (т.е. если key=index может меняться для одного и того же элемента)
+
+</details>
+
+<details>
+  <summary>Что такое render props? Для чего нужны?</summary>
+
+render props - функция для шаринга между компонентами
+
+-   будтоу слот во Vue
+
+<!-- todo: code example -->
+</details>
+
+<details>
+  <summary>Что такое redux?</summary>
+
+state manager for js apps
+
+-   хранить состояние в дереве в едином сторе
+
+чтобы изменить стор надо отправить action через функцию dispatch()
+
+```javascript
+const ActionType = "AddCard"
+const action = {
+	type: ActionType,
+	payload: {
+		id: "123",
+		text: "text",
+	},
+}
+
+dispatch(action)
+```
+
+это action попадет reducer, где обработается определенным образом
+
+```javascript
+const reducer = (state = [], action) => {
+    switch (action.type) {
+        case ActionType:
+            const newItem = {
+                id: action.payload.id,
+                text: action.payload.text,
+            }
+            return [..state, newItem]
+    }
+}
+```
+
+</details>
+
+<details>
+  <summary>Как реализовать side effect в redux?</summary>
+
+for ex: логгирование, отправка запроса на сервер
+
+middleware - свой или redux thunk, redux saga
+
+```javascript
+const store = createStore(rootReducer, applyMiddleware(logger, thunk))
+```
+
+, где thunk из redux-thunk и logger - сайд еффект
+
+```javascript
+// свой middleware
+const logger = (state) => (next) => (action) => {
+	console.log("dispatching = ", action)
+	console.log("state before = ", store.getState())
+	const result = next(action)
+	console.log("state after = ", store.getState())
+	return result
+}
+```
+
+```javascript
+// thunk middleware
+const getTodos = () => {
+	return (dispatch) => {
+		getAllTodos()
+			.then((todos) => {
+				dispatch({
+					type: init_todos,
+					payload: todos,
+				})
+			})
+			.catch((err) => {
+				console.error(err)
+			})
+	}
+}
+```
+
+```javascript
+// saga middleware
+export function* loginFlow() {
+	while (true) {
+		const { payload } = yield take(LOGIN_REQUEST)
+		const { username, password } = payload
+		const task = yield fork(authorize, username, password)
+	}
+}
+export function* loginFlowSaga() {
+	yield loginFlow()
+}
+```
+
+</details>
+
+<details>
+<summury>реакт реактивный?</summury>
+
+-   react docs scheduling
+-   реакт компоненты - функции
+-   но мы их не запускаем
+-   сам реакт вызывает их в нужные моменты
+-   реакт рекурсивно обходит дерево
+-   UI фреймворк шобы не было тормозов
+-   реакт использует pull модель
+-   реакт = планировщик, а чистой реактивности в нём нет
+-   react batching добавлена в React 18 = планировка выполнения действия
+
+</details>
+
+<details>
+<summury>Что такое Synthetics Event?</summury>
+
+кроссбраузерная обёртка над нативными событиями
+интерфейс схож с нативными
+помогает всем событиям одинаково работать во всех бразуерах
+e.nativeEvent дает нативное событие
 
 </details>
