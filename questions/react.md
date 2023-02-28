@@ -338,10 +338,70 @@ useEffect(() => {
 ```
 
 </details>
+
 <details>
   <summary>Какие паттерны есть в React?</summary>
 
 -   controlled and uncontrolled components
+-   higher order components
+-   render props
+-   compound components
+</details>
+
+<details>
+  <summary>Примеры использования HOC в React?</summary>
+
+</details>
+
+<details>
+  <summary>Примеры использования Render Props в React?</summary>
+
+</details>
+
+<details>
+  <summary>Примеры использования Compound Components в React?</summary>
+
+</details>
+
+<details>
+  <summary>Как передать данные между соседними компонентами?</summary>
+
+-   через пропсы от единого родителя
+-   через context
+-   c помощью state manager'а
+-   используя ref'ы в классовых компонентах
+
+```jsx
+class Parent extends React.PureComponent {
+	titleRef
+	saveTitleRef = (ref) => (this.titleRef = ref)
+	getTitleRef = () => this.titleRef
+
+	render() {
+		return (
+			<div>
+				<Child refGetter={this.getTitleRef} />
+				<div ref={this.saveTitleRef}>I am title</div>
+			</div>
+		)
+	}
+}
+
+class Child extends React.PureComponent<any> {
+	setWhatever = () => {
+		this.props.refGetter().innerHTML = Math.random()
+	}
+
+	render() {
+		return (
+			<div>
+				<button onClick={this.setWhatever}>Press me</button>
+			</div>
+		)
+	}
+}
+```
+
 </details>
 
 <details>
@@ -464,9 +524,9 @@ const PortalExampleApp = () => {}
 </details>
 
 <details>
-  <summary>Для чего нужны keys?</summary>
+  <summary>Для чего нужны keys? Можно использовать index?</summary>
 
-keys - строковый аттрибут
+keys - строковый аттрибут, индетификатор элемента списка реакт компонентов
 
 -   помогает реакту понять какие элементы были добавлены, изменены, удалены
 -   только в крайних случаях = не стоит использовать index при проходе через map, если список может изменяться (т.е. если key=index может меняться для одного и того же элемента)
@@ -484,11 +544,22 @@ render props - функция для шаринга между компонен�
 </details>
 
 <details>
+  <summary>Что такое state managment?</summary>
+
+state managment - технология, позволяющая:
+
+-   управлять состоянием приложения
+-   отделять логику управления состоянием (slices, thunks, etc.)
+
+</details>
+
+<details>
   <summary>Что такое redux?</summary>
 
 state manager for js apps
 
 -   хранить состояние в дереве в едином сторе
+-   reducer должен быть чистой функцией(===), т.к. ресурсоемкое сравнение вредит(==)
 
 чтобы изменить стор надо отправить action через функцию dispatch()
 
