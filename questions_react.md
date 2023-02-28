@@ -1,4 +1,4 @@
-# Interview Questions for JS, React Developer
+# Interview Questions about React
 
 <details>
   <summary>Что вызывает обновления компонентов?</summary>
