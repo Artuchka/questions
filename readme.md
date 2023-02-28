@@ -1,5 +1,11 @@
 # Interview Questions for Web Developer
 
--   [React](./questions/react.md)
--   [JS](./questions/js.md)
--   [CSS](./questions/css.md)
+### [Browser | General](./questions/browser.md)
+
+### [HTML](./questions/html.md)
+
+### [CSS](./questions/css.md)
+
+### [JavaScript](./questions/js.md)
+
+### [React](./questions/react.md)
