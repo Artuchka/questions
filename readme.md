@@ -1,6 +1,6 @@
 # Interview Questions for Web Developer
 
-### :globe_with_meridians: [Browser | General](./questions/browser.md) :globe_with_meridians:
+### [:globe_with_meridians: Browser | General :globe_with_meridians:](./questions/browser.md)
 
 ### [<img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"/> HTML](./questions/html.md)
 
