@@ -459,7 +459,7 @@ export function* loginFlowSaga() {
 </details>
 
 <details>
-<summury>реакт реактивный?</summury>
+<summary>реакт реактивный?</summary>
 
 -   react docs scheduling
 -   реакт компоненты - функции
@@ -474,7 +474,7 @@ export function* loginFlowSaga() {
 </details>
 
 <details>
-<summury>Что такое Synthetics Event?</summury>
+<summary>Что такое Synthetics Event?</summary>
 
 кроссбраузерная обёртка над нативными событиями
 интерфейс схож с нативными
