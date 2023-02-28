@@ -184,17 +184,15 @@ export const ComponentForExport = withLoggerHOC(({ log, text }) => {
 <details>
   <summary>Когда использовать классовые компонентов вместо функциональных?</summary>
 
-    В целом, почти все методы жизненного цикла (из классовых) можно так или иначе реализовать в функциональных\
+В целом, почти все методы жизненного цикла (из классовых) можно так или иначе реализовать в функциональных
 
-    useEffect = componentWillUpdate, componentDidUpdate, componentDidMount
+useEffect = componentWillUpdate, componentDidUpdate, componentDidMount
 
-    useLayoutEffect = componentDidUpdate, componentDidMount
+useLayoutEffect = componentDidUpdate, componentDidMount
 
+однако отсутсвует несколько этапов жизнненного цикла из классовых в функ-ых
 
-    однако отсутсвует несколько этапов жизнненного цикла из классовых в функ-ых
-
-    for ex: getSnapshotBeforeUpdate, getDerrivedStateFromError, componentDidCatch
-
+for ex: getSnapshotBeforeUpdate, getDerrivedStateFromError, componentDidCatch
 
     getSnapshotBeforeUpdate:
 
