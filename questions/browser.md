@@ -47,9 +47,26 @@ Hypertext Transfer Protocol
 -   DELETE - для удаления данных, есть entity body
 -   PATCH- для частичного изменения данных, есть entity body
 -   PUT - для перезаписи\замены существущих данных, есть entity body
--   HEAD - запрос данных как GET, но без тела ответа
--   CONNECT - устанавливает "туннель" к серверу, определённому по ресурсу.
 -   OPTIONS - используется для описания параметров соединения с ресурсом.
+-   HEAD - запрос данных как GET, но без тела ответа
+
+HEAD For example, if a URL might produce a large download, a HEAD request could read its Content-Length header to check the filesize without actually downloading the file.
+
+OPTIONS To find out which request methods a server supports\
+In CORS, a preflight request is sent with the OPTIONS method so that the server can respond if it is acceptable to send the request. In this example, we will request permission for these parameters\
+[options by dev mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS)
+
+```js
+//req
+curl -X OPTIONS https://example.org -i
+
+//res
+HTTP/1.1 204 No Content
+Allow: OPTIONS, GET, HEAD, POST
+Cache-Control: max-age=604800
+Date: Thu, 13 Oct 2016 11:45:00 GMT
+Server: EOS (lax004/2813)
+```
 
 Ничего не мешает удалять данные POST запросом, но для лучше семантики стоит использовать DELETE\
 поглядите Microsoft Giudelines для построения rest api
@@ -60,6 +77,12 @@ Hypertext Transfer Protocol
 <summary>
 Что такое WebSocket? Приницпы работы с ним?
 </summary>
+
+upgraded http протокол
+
+протокол для взаимодействия в реальном времени(real-time)
+
+сообщения передаются пока одна из сторон не закроет соединение
 
 Протокол WebSocket («веб-сокет»), описанный в спецификации RFC 6455, обеспечивает возможность обмена данными между браузером и сервером через постоянное соединение. Данные передаются по нему в обоих направлениях в виде «пакетов», без разрыва соединения и дополнительных HTTP-запросов.
 
@@ -115,18 +138,11 @@ socket.onerror = function (error) {
 <details>
 <summary>
 Что такое Cross-Origin Resource Sharing (CORS)?
+</summary>
 
 Cross-Origin Resource Sharing (CORS) — механизм, использующий дополнительные HTTP-заголовки, чтобы дать возможность агенту пользователя получать разрешения на доступ к выбранным ресурсам с сервера на источнике (домене), отличном от того, что сайт использует в данный момент. Говорят, что агент пользователя делает запрос с другого источника (cross-origin HTTP request), если источник текущего документа отличается от запрашиваемого ресурса доменом, протоколом или портом.
 
 В целях безопасности браузеры ограничивают cross-origin запросы, инициируемые скриптами. Например, XMLHttpRequest и Fetch API следуют политике одного источника (same-origin policy). Это значит, что web-приложения, использующие такие API, могут запрашивать HTTP-ресурсы только с того домена, с которого были загружены, пока не будут использованы CORS-заголовки.
-
-</summary>
-
-upgraded http протокол
-
-протокол для взаимодействия в реальном времени(real-time)
-
-сообщения передаются пока одна из сторон не закроет соединение
 
 </details>
 
