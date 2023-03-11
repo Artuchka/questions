@@ -324,6 +324,7 @@ getDerrivedStateFromError:
 -   после возникновения ошибки потомка
 -   вызывается на этапе рендера
 -   для рендеринга запасного UI в случае ошибки
+-	т.е. в комплекте с `Suspense` и `use` хуком = ErrorBoundary
 
 componentDidCatch:
 
@@ -332,13 +333,31 @@ componentDidCatch:
 
 errorBoundaries (предохранители) можно сделать только в классовых
 
-как насчет
+ведь `<Suspense />` даёт fallback только на время loading
 
-```javascript
-<Suspense />
+```js
+class ErrorBoundary extends React.Component {
+	state = {hasError: false}
+
+	// called when children or current component throws an error
+	// instead of wiping out all broken components
+	static getDerivedStateFromError(error) {
+		return {hasError: true}
+	}
+
+	componentDidCatch(error, info) {
+		console.log(error, info)
+	}
+
+	render() {
+		if(this.state.hasError) {
+			return this.props.fallback
+		}	
+		return this.props.children
+	}
+}
 ```
 
-однако....?
 
 </details>
 
@@ -763,5 +782,28 @@ export function* loginFlowSaga() {
 интерфейс схож с нативными\
 помогает всем событиям одинаково работать во всех бразуерах\
 e.nativeEvent дает нативное событие\
+
+</details>
+<details>
+
+<summary>Что может делать новый хук `use`?</summary>
+
+this thing inside ordinary function
+```js
+const data = await doSomeAsyncStuff()
+```
+
+the same as this one in Component Function
+```js
+const data = use(doSomeAsyncStuff())
+```
+
+грубо говоря, он даёт хороший инструмент для работы с промисами, которого не было в реакте
+
+```js 
+
+
+```
+
 
 </details>
