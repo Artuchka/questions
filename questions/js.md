@@ -17,7 +17,7 @@ str = "101"
 boolean = true
 n = null // ничего, пусто
 undef = undefined // переменная после объявления, без инициализации
-bigintNumber = 132212387123n // для больших чисел
+bigintNumber = 1322n // для больших чисел произвольной длины
 obj = { name: "temka" }
 symb = new Symbol("some string; я возвращаю уникальную ссылку")
 ```
@@ -55,6 +55,33 @@ console.log(user.getAgeExpression()) // undefined
 -   В стрелочных функциях, this привязан к окружению, в котором была создана функция. В глобальной области видимости, this будет указывать на глобальный объект.
 
 -   Когда функция вызывается как метод объекта, используемое в этой функции ключевое слово this принимает значение объекта, по отношению к которому вызван метод.
+
+</details>
+
+<details>
+<summary>Что такое строгий режим (strict mode)?</summary>
+
+дает ошибки там, где обычный js engine не выдает ошибки (а стоило бы)
+
+3 варианта включения такого режима:
+
+1.  at the top of file
+    ```js
+    "use-strict"
+    ```
+2.  inside function
+    ```js
+    function func() {
+    	"use-strict"
+    }
+    ```
+3.  by default inside ESM
+
+    ```js
+    function func() {}
+
+    export default func
+    ```
 
 </details>
 
