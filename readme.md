@@ -10,4 +10,6 @@
 
 ### [<img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/> React](./questions/react.md)
 
-### [<img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB"/> Computer Science](./questions/CS.md)
+### [<img src="https://img.shields.io/badge/Redux-red?style=for-the-badge"/> Redux](./questions/redux.md)
+
+### [<img src="https://img.shields.io/badge/CS-blue?style=for-the-badge"/> Computer Science](./questions/CS.md)
