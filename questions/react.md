@@ -116,6 +116,62 @@ Reconciliation (Cверка) - это процесс, посредством к�
 Это называется batching\
 
 </details>
+<details>
+  <summary>Что такое batching?</summary>
+
+процесс группировки нескольких вызовов обновлнения состояния в один этап рендера.
+
+Пакетная обработка
+
+<details>
+  <summary>Сколько будет рендеров?</summary>
+
+```js
+const onClick = () => {
+	setLoading(true)
+	setLoading(false)
+}
+// => 1
+```
+
+```js
+const onClick = async () => {
+	setLoading(true)
+
+	await sendData(formData)
+
+	setLoading(false)
+}
+// => 2 = 1 before await + 1 after await
+```
+
+```js
+const onClick = async () => {
+	setLoading(true)
+	setAnotherData(anotherData)
+
+	await sendData(formData)
+
+	setData(newData)
+	setLoading(false)
+}
+// => 2 or 3 renders
+// 2 for React 18v = 1 before await + 1 after await
+// 3 for React 17v = 1 before await + 1 render for every setter after await
+```
+
+</details>
+
+</details>
+
+<details>
+  <summary>Зачем нужны unstable_batchedUpdates() и flushSync()? Их разница</summary>
+
+flushSync объединяет функции внутри себя в один рендер, а после себя обновляет DOM с максимальной приоритетностью
+
+unstable_batchedUpdates объединяет функции внутри себя в один рендер и идёт со всем потоком не выделяясь
+
+</details>
 
 <details>
   <summary>Что такое JSX?</summary>
