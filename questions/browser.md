@@ -241,7 +241,373 @@ event loop является малой частью в большом механ
 
 <details>
 <summary>
+Зачем нужно ООП?</summary>
+
+Было решением процедурного программирования
+
+```js
+const width = 5
+const height = 10
+
+const getArea = (a, b) => a * b
+
+const area = getArea(width, height)
+```
+
+процедурное сложно конфигурировать приложение, управлять сущностями + делать декомпозицию
+
+```js
+class Rectangle {
+	constructor(public width: number, public height: number) {}
+
+	getArea() {
+		return this.width * this.height;
+	}
+	getWidth() {
+		return this.width;
+	}
+	getHeight() {
+		return this.height;
+	}
+}
+
+const rect = new Rectangle(10, 20)
+rect.getArea()
+rect.getHeight()
+```
+
+классовое легко настраивать, добавлять новые методы работы, новые поля
+
+</details>
+
+<details>
+<summary>
 Приведите примеры использования основных принципов ООП</summary>
+
+### Инкапсуляция (сокрытие)
+
+```js
+class Database {
+	private _url;
+	private _port;
+	private _username;
+	private _password;
+	private _tables;
+
+	constructor(url, port, username, password) {
+		this._url = url;
+		this._port = port;
+		this._username = username;
+		this._password = password;
+		this._tables = []
+	}
+
+	public createTable(table) {
+		this._tables.push(table);
+	}
+
+	public clearTable() {
+		this._tables = [];
+	}
+
+	get url() {
+		return this._url;
+	}
+	get port() {
+		return this._port;
+	}
+	get username() {
+		return this._username;
+	}
+	get password() {
+		return this._password;
+	}
+	get tables() {
+		return this._tables;
+	}
+}
+
+const db = new Database("http://localhost", 3000, "admin", "123456");
+db.createTable({name: 'roles'})
+
+db.tables = [] // won't work
+db.clearTable() // will work
+```
+
+поля-настройки скрыты от изменения извне
+однако можем их читать и добавлять таблицы через спец методы
+
+### Наследование
+
+```js
+class Person {
+	private _name: string
+	private _age: number
+
+	constructor(name: string, age: number) {
+		this._name = name
+		this._age = age
+	}
+
+	public get mainInfo() {
+		return `im ${this._name} and im ${this._age} yo`
+	}
+
+	get name() { return this._name; }
+	set name(name: string) { this._name = name; }
+
+	get age() { return this._age; }
+	set age(age: number) {
+		if(age < 0){
+			this._age = 0
+		} else {
+			this._age = age
+		}
+	}
+}
+
+class Employee extends Person {
+	private _inn: string
+	private _passport: number
+
+	constructor(name:string, age: number , inn: string, passport: number) {
+		super(name, age)
+		this._inn = inn
+		this._passport = passport
+	}
+
+	get inn() { return this._inn; }
+	set inn(inn: string) {
+		if(isValidInn(inn)) {
+			this._inn = inn;
+		}
+	}
+
+	get passport() { return this._passport; }
+	set passport(passport: number) {
+		if(isValidPassport(passport)){
+			this._passport = passport
+		}
+	}
+}
+
+const emp = new Employee("Temka", 21, "im inn", "im passport")
+
+console.log(emp.inn) // "im inn"
+console.log(emp.passport) // "im passport"
+
+class Developer extends Employee {
+	private _level: "Junior" | "Middle" | "Senior"
+	private _language: string
+
+	constructor(name:string, age: number , inn: string, passport: number, language: string, level: string) {
+		super(name, age, inn, passport)
+		this._language = language
+		this._level = level
+	}
+
+	get level() { return this._level}
+	set level(level) {
+		if(isValidLevel(level)) {
+			this._level = level
+		}
+	}
+
+	get language() { return this._language}
+	set language(language) { this._language = language }
+}
+
+const developer = new Developer("Temka", 21, "im inn", "im passport", "cobol", "junior")
+console.log(developer.mainInfo) // `im Temka and im 21 yo`
+```
+
+### Полиморфизм = поли(много) + морфиус(форма) = много форм
+
+```js
+class Person {
+	...
+
+	greet() {
+		console.log('Hello im person!')
+	}
+}
+
+class Employee extends Person {
+	...
+
+	greet() {
+		console.log('Hello im Employee!')
+	}
+}
+
+
+class Developer extends Employee {
+	...
+
+	greet() {
+		console.log('Hello im Developer!')
+	}
+}
+
+
+const person = new Person("Temka", 21)
+const emp = new Employee("Temka", 21, "im inn", "im passport")
+const developer = new Developer("Temka", 21, "im inn", "im passport", "cobol", "junior")
+
+const people: Person[] = [person, emp, developer]
+
+function massGreeting(list: Person[]) {
+	for (let i = 0; i < people.length; i++) {
+		person.greet()
+	}
+}
+massGreeting(people)
+```
+
+### Композиция
+
+при композиции, поле создатеся внутри класса
+
+```js
+class Car {
+	private engine: Engine
+	private wheels: Wheel[]
+
+	constructor() {
+		this.engine = new Engine()
+
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+	}
+}
+```
+
+Произошла композиция колес и движка в автомобиле
+
+### Агрегация
+
+при агрегации, поле передается через конструктор класса
+
+```js
+class Freshener {}
+
+class Car {
+	private freshener: Freshener;
+	private engine: Engine
+	private wheels: Wheel[]
+
+	constructor(freshener) {
+		this.freshener = freshener
+		this.engine = new Engine()
+
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+		this.wheels.push(new Wheel())
+	}
+}
+
+class LivingRoom {
+	freshener: Freshener
+
+	constructor(freshener: Freshener) {
+		this.freshener = freshener
+	}
+}
+```
+
+Произошла агреграция освежителя в автомобиль
+Произошла агреграция освежителя в квартиру
+
+### Interfaces | Abstract classes
+
+интерфейсы позволяют писать более гибкий код\
+на них лучше проектировать систему
+
+```js
+class User {
+	name: string
+	age: number
+}
+class Car {
+	model: string
+	year: number
+}
+
+interface Repository<T> {
+	create: (obj: T) => void;
+	read: () => T;
+	update: (obj: T) => void;
+	delete: (obj: T) => void;
+}
+
+class UserRepository implements Repository<User> {
+	create(obj: User) { ... }
+	update(obj: User) { ... }
+	delete(obj: User) { ... }
+	read(): User { ...; return user }
+}
+class CarRepository implements Repository<Car> {
+	create(obj: Car) { ... }
+	update(obj: Car) { ... }
+	delete(obj: Car) { ... }
+	read(): Car { ...; return car }
+}
+```
+
+### Dependency Injection
+
+```js
+interface UserRepository {
+	getUsers: () => User[];
+}
+
+class UserMongoDB {
+	getUsers() {
+		return [
+			{
+				name: "John",
+				age: 20,
+				description: "John from Mongo database",
+			},
+		]
+	}
+}
+class UserPostgreSQL {
+	getUsers() {
+		return [
+			{
+				name: "Temka",
+				age: 25,
+				description: "Temka from PostgreSQL database",
+			},
+		]
+	}
+}
+
+class UserService {
+	userRepo: UserRepository
+
+	constructor(userRepo: UserRepository) {
+		this.userRepo = userRepo
+	}
+
+	getUsersBelowAge(age: number) {
+		const users = this.userRepo.getUsers()
+		console.log(users)
+	}
+}
+
+// UserService works fine with any database
+// that's called `Dependency injection`
+const userService = new UserService(new UserMongoDB())
+const userService2 = new UserService(new UserPostgreSQL())
+
+userSerivce.getUsersBelowAge(10)
+userService2.getUsersBelowAge(10)
+```
 
 </details>
 
