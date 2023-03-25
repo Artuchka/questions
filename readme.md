@@ -12,4 +12,4 @@
 
 ### [<img src="https://img.shields.io/badge/Redux-red?style=for-the-badge"/> Redux](./questions/redux.md)
 
-### [<img src="https://img.shields.io/badge/CS-blue?style=for-the-badge"/> Computer Science](./questions/CS.md)
+### [<img src="https://img.shields.io/badge/CS-blue?style=for-the-badge"/> Computer Science](./questions/cs.md)
