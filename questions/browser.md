@@ -241,9 +241,15 @@ event loop является малой частью в большом механ
 
 <details>
 <summary>
+Приведите примеры использования основных принципов ООП</summary>
+
+</details>
+
+<details>
+<summary>
 Что такое SOLID (в ООП)?</summary>
 
-SOLID (сокр. от англ. single responsibility, open-closed, Liskov substitution, interface segregation и dependency inversion) в программировании — мнемонический акроним, введённый Майклом Фэзерсом (Michael Feathers) для первых пяти принципов, названных Робертом Мартином в начале 2000-х, которые означали пять основных принципов объектно-ориентированного программирования и проектирования. Принципы SOLID — это руководства, которые также могут применяться во время работы над существующим программным обеспечением для его улучшения - например для удаления «дурно пахнущего кода».
+SOLID (сокр. от англ. single responsibility, open-closed, Liskov substitution, interface segregation и dependency inversion) = пять основных принципов объектно-ориентированного программирования и проектирования. Принципы SOLID — это руководства, которые также могут применяться во время работы над существующим программным обеспечением для его улучшения - например для удаления «дурно пахнущего кода».
 
 Избавиться от "признаков плохого проекта" помогают следующие пять принципов SOLID:
 
@@ -252,6 +258,369 @@ SOLID (сокр. от англ. single responsibility, open-closed, Liskov subst
 -   L - Принцип подстановки Барбары Лисков (The Liskov Substitution Principle) «объекты в программе должны быть заменяемыми на экземпляры их подтипов без изменения правильности выполнения программы.» См. также контрактное программирование. Наследующий класс должен дополнять, а не изменять базовый.
 -   I - Принцип разделения интерфейса (The Interface Segregation Principle) «много интерфейсов, специально предназначенных для клиентов, лучше, чем один интерфейс общего назначения.»
 -   D - Принцип инверсии зависимостей (The Dependency Inversion Principle) «Зависимость на Абстракциях. Нет зависимости на что-то конкретное.»
+
+</details>
+
+<details>
+<summary>
+Зачем нужны принципы SOLID</summary>
+
+Позволяют разработчикам разговаривать на одном языке\
+(на каждом проекте используют свои приниципы, свои фреймворки)\
+по полгода объясняют как пишут проект = проектные знания
+
+-   Писать масштабируемые приложения, где легко вносить изменения
+-   Порог вхождения снижается
+-   Код упрощается
+-   Все подходы используют базовые решения и имеют известные ошибки (пример таблицы интегралов)
+</details>
+
+<details>
+<summary>
+Приведите примеры использования принципов SOLID</summary>
+
+#### S: Single responsobility
+
+```js
+class Auto {
+	model = ''
+	year = 1990
+
+	makeCar()
+	setCarInfo()
+
+	addCustomerAuto()
+	readCustomerAuto()
+	updateCustomerAuto()
+	deleteCustomerAuto()
+
+	dropAutoDB()
+	updateAutoDB()
+	addAutoDB()
+}
+```
+
+Class Auto is overloaded with methods from different areas\
+And should be splitted into 3 separate classes
+
+```js
+// works with any car
+class Auto {
+	model = ''
+	year = 1990
+
+	makeCar()
+	setCarInfo()
+}
+
+// works with auto, which customer owns
+class CustomerAuto {
+	add()
+	read()
+	update()
+	delete()
+}
+
+// works with DB
+class DB {
+	drop()
+	update()
+	add()
+}
+```
+
+We make changes in single class, which feature it belongs to
+
+#### O: Opened for new features(class types) \ closed for changing old functionality
+
+The following example makes it hard to add `Toyota` (or any new car brand) to existance\
+WITHOUTH CHANGING THE FUNCTIONALITY
+
+```js
+for (let i = 0; i < auto.length; i++) {
+	switch (auto[i].model) {
+		case "Tesla":
+			arr.push("80 000 rubles")
+		case "Audi":
+			arr.push("20 000 dollars")
+		default:
+			arr.push("no auto price")
+	}
+}
+```
+
+This is bad:
+a bunch of if-statements
+
+```js
+		case "Toyota":
+			arr.push("80 000 rubles")
+```
+
+However, if we followed the `O` principle, we should write this:
+
+```js
+for (let i = 0; i < auto.length; i++) {
+	arr.push(auto[i].getCarPrice())
+}
+```
+
+ofc, we'll have to create the method for each new Auto brand since now\
+tho we can leave old functionality working as expected (it's already tested & works)
+
+#### L: Liskov substitution
+
+imagine having Rectangle
+
+```js
+class Rectangle {
+	constructor(public width: number, public height: number) {}
+
+	setWidth(width: number) {
+		this.width = width
+	}
+	setHeight(height: number) {
+		this.height = height
+	}
+
+	areaOf() {
+		return this.width * this.height
+	}
+}
+```
+
+now you want to have a Square (why not crete it from Rectangle, right...?)
+
+```js
+class Square extends Rectangle {
+	constructor(width: number) {
+		super(width, width)
+	}
+
+	setWidth(width: number) {
+		this.width = width
+		this.height = width
+	}
+	setHeight(height: number) {
+		this.height = height
+		this.width = height
+	}
+}
+```
+
+yeah, we can change square sides\
+but imagine we'd work in some function with `Rectangle` instance\
+BUT actually it was `Square`, so the function will think it works with `Rectangle`, tho it's not...
+
+```js
+const changeSizes = (figure: Rectangle) => {
+	figure.setWidth(10)
+	figure.setHeight(20) // at this point function expects figure to have width=10 and height=20
+}
+// hmm u see, yeah?
+// this function works differently for Rectangle and Square
+```
+
+```js
+interface Figure {
+	setWidth(value: number): void;
+	setHeight(value: number): void;
+	areaOf(): void;
+}
+
+class Rectangle extends Figure {
+	setWidth(value: number) { ... }
+	setHeight(value: number) { ... }
+	areaOf() { ... }
+}
+
+class Square extends Figure {
+	setWidth(value: number) { ... }
+	setHeight(value: number) { ... }
+	areaOf() { ... }
+}
+```
+
+now it's easier to distinguish between square and rectangle
+
+##### Second example for Liskov
+
+```js
+class Database {
+	connect() {}
+	read() {}
+	write() {}
+	joinTables() {}
+}
+
+
+class MySQLDatabase extends Database {
+	connect() {}
+	read() {}
+	write() {}
+	joinTables() {}
+}
+class MongoDB extends Database {
+	connect() {}
+	read() {}
+	write() {}
+	// u see yeah?
+	// child class `MongoDB` breaks logic from parent class `Database`
+	// Liskov principle violated
+	joinTables() {
+		throw new Error("MongoDB has no support for tables")
+	}
+```
+
+```js
+class Database {
+	connect() {}
+	read() {}
+	write() {}
+}
+
+class SQLDatabase {
+	connect() {}
+	read() {}
+	write() {}
+	joinTables() {}
+}
+
+class NoSQLDatabase {
+	connect() {}
+	read() {}
+	write() {}
+	createIndex() {}
+}
+// now that's good!! Liskov is happy
+class MySQLDatabase extends SQLDatabase { ... }
+class MongoDB extends NoSQLDatabase { ... }
+```
+
+#### I: Interface Segragation
+
+lmao this one is funny
+
+```js
+interface Weapon {
+	attack(): void;
+	reload(): void;
+}
+
+interface GlockNine extends Weapon {}
+interface RPG extends Weapon {}
+
+interface Knife extends Weapon {}
+// BUT wait a second, knife does not need reloading...
+```
+
+so we should segregate the weapon methods into separate interfaces
+
+```js
+// names are shitty, i know
+interface AbleToAttack {
+	attack(): void;
+}
+interface AbleToReload {
+	reload(): void;
+}
+
+// NICE !!
+// It's so easy to create new weapons now
+interface GlockNine extends AbleToAttack, AbleToReload {}
+interface RPG extends AbleToAttack, AbleToReload {}
+interface Knife extends AbleToAttack {}
+```
+
+#### D: Dependency Inversion
+
+Upper modules should not depend on lower modules
+abstraction
+
+imagine we have music app, which gets songs from Yandex\
+=> `getSongs` is the method which does it
+
+```js
+class YandexMusicApi {
+	getSongs() {}
+}
+
+const MusiApp = () => {
+	const API = new YandexMusicApi()
+
+	const songs = API.getSongs()
+}
+```
+
+now we are tired of Yandex, we want Spotify
+
+```js
+class YandexMusicApi {
+	getSongs() {}
+}
+
+class SpotifyMusicApi {
+	findAllSongs() {}
+}
+
+const MusiApp = () => {
+	// clearly, we must change it here
+	const API = new SpotifyMusicApi()
+
+	// but may we leave it as it was?
+	// because each api has lots of different named methods
+	const songs = API.findAllSongs()
+}
+```
+
+so it would be better to create MusicClient
+
+```js
+interface MusicApi {
+	getTracks: () => void;
+}
+
+class YandexMusicApi implements MusicApi {
+	getTracks(): void {}
+}
+class SpotifyMusicApi implements MusicApi {
+	getTracks(): void {}
+}
+class VKMusicApi implements MusicApi {
+	getTracks(): void {}
+}
+
+const MusiApp = () => {
+	// 1. clearly, we must change it here
+	const API: MusicApi = new SpotifyMusicApi()
+	// 3. tho what if we have lots of api instances for spotify
+	// 4. and now willing to have Yandex instead
+
+	// 2. but this always stays the same
+	const songs = API.getTracks()
+}
+```
+
+let add client which helps us to abstract the APIs
+
+```js
+class MusicClient implements MusicApi()  {
+	client: MusicApi;
+	constructor(public client: MusicApi) {
+		// this.client = client;
+	}
+
+	getTracks() {
+		this.client.getTracks();
+	}
+}
+
+const MusiApp = () => {
+	const API: MusicApi = new MusicClient(new SpotifyMusicApi())
+
+	const songs = API.getTracks()
+}
+```
 
 </details>
 
