@@ -754,6 +754,10 @@ interface Knife extends AbleToAttack {}
 
 #### D: Dependency Inversion
 
+Он соблаюдается при программировании на уровне интерфейсов(создание единого модуля-управлятора для разных API'шек)
+
+Файл который обновляется чаще должен зависеть от файла который зависит реже
+
 Upper modules should not depend on lower modules
 abstraction
 
