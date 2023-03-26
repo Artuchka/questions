@@ -92,7 +92,7 @@
 
 <details>
 <summary>
-Разница между `<strong>` `<em>` и `<b>` `<i>`
+Разница между тегами `strong` `em` и `b` `i`
 </summary>
 
 strong и em дают логическое выделение\

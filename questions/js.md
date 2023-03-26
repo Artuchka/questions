@@ -150,35 +150,61 @@ console.log(checkAge.apply(obj, [15, 15])) // true
 <details>
 <summary>Какие есть способы обхода массивов? Их особенности</summary>
 
-### while() do{}
+##### while() do{}
 
 сначала проверятся условие, потом делается итерация
 
-### do() while{}
+##### do() while{}
 
 первая итерация будет в любом случае, проверятся условие для следующей итерации
 
-### for()
+##### for(startAction; condition; actionForEveryLoop)
 
-### for(const item of obj)
+обычный классический цикл for
 
-### .forEach
+##### for(const key in obj) - лучше для объектов
 
-итерирует, ничего не возвращает
+##### for(const item of array) - лучше для массивов
 
-### .map
+```js
+Object.prototype.objCustom = function () {}
+Array.prototype.arrCustom = function () {}
+
+let iterable = [3, 5, 7]
+iterable.foo = "hello"
+
+for (let i in iterable) {
+	console.log(i) // выведет 0, 1, 2, "foo", "arrCustom", "objCustom"
+}
+
+for (let i in iterable) {
+	if (iterable.hasOwnProperty(i)) {
+		console.log(i) // выведет 0, 1, 2, "foo"
+	}
+}
+
+for (let i of iterable) {
+	console.log(i) // выведет 3, 5, 7
+}
+```
+
+##### .forEach
+
+итерирует, ничего не возвращает, нельзя остановить через `break`, `return`, `continue`, неаккуратно каждый второй брать i+=2
+
+##### .map
 
 вернет массив с изначальными элементами, изменными согласно callback'у
 
-### .filter
+##### .filter
 
 вернет массив из начальных элементов, соответсвующих условию из callback'а
 
-### .reduce
+##### .reduce
 
 вернет аккумулированное(накопленное) значение, проходя массив слева-направо
 
-### .reduceRight
+##### .reduceRight
 
 Метод reduceRight() применяет функцию к аккумулятору и каждому значению массива (справа-налево), сводя его к одному значению.
 
