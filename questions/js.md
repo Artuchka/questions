@@ -613,11 +613,13 @@ async функция всегда вернет Promise
 </details>
 
 <details>
-<summary>для чего нужны e.preventDefault(), e.stopPropagation() </summary>
+<summary>для чего нужны e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation() </summary>
 
 e.preventDefault - функция для предотвращения выполнения дефолтных реакций\действий бразуера по умолчанию на событие e
 
 e.stopPropagation - функция для предотвращения всплытия (bubbling) события вверх по дереву ДОМ, т.е. чтобы родитель не узнал о событиях ребенка
+
+e.stopImmediatePropagation - чтобы другие события на текущем элементе не вызывались
 
 </details>
 

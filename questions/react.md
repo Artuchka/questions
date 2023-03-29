@@ -8,6 +8,7 @@
 нужен для:
 
 -   стандартизация разработки
+-   синхронизация View и State
 -   позволяет удобно изменять интерфейс (значение ДОМ элемента) в зависимости от состояния
 -   позволяет использовать декларативный подход
 -   увеличивает производительность приложений:
@@ -67,14 +68,37 @@ todo: узнать как fibers связаны с обновлениями
 <details>
   <summary>Что такое Fiber и зачем он нужен?</summary>
 
-Fiber это сверщик
+проект Fiber это сверщик, который в'merge'н в 16ую версию React'а
+
+`current` tree показан на экране, не изменяется\
+и `workInProgress` tree, который изменяется, а потом подставляется вместо workInProgress
+
+потом workInProgress и current меняются местами
+
+Представляет из себя js объект строящий, дерево;
+хранит в себе:
+
+-   children = only refernce to single first
+-   sibling = only refernce to single closest sibling
+-   return = what this node returns?
 
 Он нужен чтобы улучшить:
 
--   анимацию
--   касания
+-   разбивает операции над DOM деревом
+-   присваивать приоритет работам => планирует
 -   останавливать работу
--   присваивать приоритет разным типам обновления
+-   анимацию
+
+виды работ:
+
+-   state change
+-   lifecycle function
+-   changes in DOM
+
+использует requestAnimationFrame и requestIdleCallback
+
+requestAnimationFrame = for high priority function called on next animation frame
+requestIdleCallback = for low priority function called during idle period
 
 </details>
 
@@ -657,6 +681,12 @@ const PortalExampleApp = () => {}
   <summary>Для чего нужны keys? Можно использовать index?</summary>
 
 keys - строковый аттрибут, индетификатор элемента списка реакт компонентов
+
+по key реакт соотносит компоненты в current \ workInProgress деревьях:
+
+-   если key остался тот же, пропсы остались те же = ничего не происходит
+-   если key остался тот же, но пропсы изменились = component Did update
+-   если key исчез из workInProgress = component Did unmount
 
 -   помогает реакту понять какие элементы были добавлены, изменены, удалены
 -   только в крайних случаях = не стоит использовать index при проходе через map, если список может изменяться (т.е. если key=index может меняться для одного и того же элемента)
